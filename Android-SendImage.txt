@@ -1,0 +1,43 @@
+﻿String queryString = "?empcode=" + EmpCode + "&name="
+					+ EmpName.replace(" ", "%20") + "&date=" + attendanceDate
+					+ "&time=" + attendanceTime.replace(" ", "%20") + "&area="
+					+ area.replace(" ", "%20") + "&googlelocation="
+					+ googlelocation.replace(" ", "%20");
+
+			// String filename = EmpCode + ".jpg";
+			// File sd = Environment.getExternalStorageDirectory();
+			// File dest = new File(sd, filename);
+
+			try {
+				// Bitmap bmp = BitmapFactory.decodeByteArray(imageCaptureBytes,
+				// 0, imageCaptureBytes.length);
+				// ByteArrayOutputStream bout =new ByteArrayOutputStream();
+				// //FileOutputStream out = new FileOutputStream(dest);
+				// bmp.compress(CompressFormat.JPEG, 75, bout);
+				// bout.flush();
+				// bout.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+			HttpClient httpclient = new DefaultHttpClient();
+			HttpPost httppost = new HttpPost(serviceURL + "markattendance"
+					+ queryString);
+
+			try {
+Bitmap bmp = BitmapFactory.decodeByteArray(imageCaptureBytes,
+						0, imageCaptureBytes.length);
+				ByteArrayOutputStream bout = new ByteArrayOutputStream();
+				// FileOutputStream out = new FileOutputStream(dest);
+				bmp.compress(CompressFormat.JPEG, 75, bout);
+				bout.flush();
+				bout.close();
+
+				httppost.setEntity(new ByteArrayEntity(bout.toByteArray()));
+				// httppost.setEntity(new Stream(content));
+				httpclient.execute(httppost);
+			} catch (ClientProtocolException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
